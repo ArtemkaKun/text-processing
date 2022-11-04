@@ -1,0 +1,41 @@
+name: Docs Checker
+
+### Based on Docs CI (docs_ci) from the V repo
+on:
+  push:
+  pull_request:
+    branches: [main]
+
+jobs:
+  check-markdown:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Install V
+        uses: vlang/setup-v@v1
+        with:
+          check-latest: true
+
+      - name: Checkout ${{ github.event.repository.name }}
+        uses: actions/checkout@v2
+
+      - name: Check markdown line length & code examples
+        run: v check-md -hide-warnings .
+        ## NB: -hide-warnings is used here, so that the output is less noisy,
+        ## thus real errors are easier to spot.
+
+  report-missing-fn-doc:
+    runs-on: ubuntu-latest
+
+    steps: 
+      - name: Install V
+        uses: vlang/setup-v@v1
+        with:
+          check-latest: true
+
+      - name: Checkout ${{ github.event.repository.name }}
+        uses: actions/checkout@v2
+
+      - name: Check public methods without documentation
+        run: v missdoc --exclude /tests/ --verify .
+

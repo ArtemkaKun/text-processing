@@ -1,0 +1,25 @@
+name: BuildOnly with prod
+
+on:
+  push:
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: ["ubuntu-latest"]
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Install V
+        uses: vlang/setup-v@v1
+        with:
+          check-latest: true
+
+      - name: Checkout ${{ github.event.repository.name }}
+        uses: actions/checkout@v2
+
+      - name: Build ${{ github.event.repository.name }}
+        run: v -prod .
