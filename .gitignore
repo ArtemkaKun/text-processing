@@ -1,1 +1,14 @@
-﻿.idea
+# Binaries for programs and plugins
+main
+text-processing
+*.exe
+*.exe~
+*.so
+*.dylib
+*.dll
+
+# Ignore common editor/system specific metadata
+.DS_Store
+.idea/
+.vscode/
+*.iml
