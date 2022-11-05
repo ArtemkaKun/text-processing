@@ -1,4 +1,4 @@
-import src.text_processing.case
+import src.case
 
 fn test_strings_to_snake_case() {
 	input := ['foo']

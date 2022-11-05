@@ -1,4 +1,4 @@
-import src.text_processing.links
+import src.links
 
 fn test_extract_links() {
 	input := ['LINK HERE -> https://test.com <- LINK HERE']
