@@ -4,15 +4,15 @@ name: Docs Checker
 on:
   push:
   pull_request:
-    branches: [main]
+    branches: [ main ]
 
 jobs:
   check-markdown:
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Install V
-        uses: vlang/setup-v@v1
+        uses: vlang/setup-v@v1.1
         with:
           check-latest: true
 
@@ -27,9 +27,9 @@ jobs:
   report-missing-fn-doc:
     runs-on: ubuntu-latest
 
-    steps: 
+    steps:
       - name: Install V
-        uses: vlang/setup-v@v1
+        uses: vlang/setup-v@v1.1
         with:
           check-latest: true
 

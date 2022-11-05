@@ -1,4 +1,10 @@
-# v-actions
-A repository with V GItHub actions that should be used in every KolciaEngine related repository
+# V text processing library
 
-Based on [this](https://blog.vlang.io/setting-up-github-actions-for-v/) article from the V blog
+This library provides a set of functions in V for text processing.
+
+## Modules
+
+| Module                  | Description                                           |
+|-------------------------|-------------------------------------------------------|
+| `text_processing.case`  | String case manipulation functions (any → snake_case) |
+| `text_processing.links` | Functions for extracting links from text              |
