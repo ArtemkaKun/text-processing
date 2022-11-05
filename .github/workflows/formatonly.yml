@@ -3,18 +3,18 @@ name: FormatOnly
 on:
   push:
   pull_request:
-    branches: [main]
+    branches: [ main ]
 
 jobs:
   build:
     strategy:
       matrix:
-        os: ["ubuntu-latest"]
+        os: [ "ubuntu-latest" ]
     runs-on: ${{ matrix.os }}
 
     steps:
       - name: Install V
-        uses: vlang/setup-v@v1
+        uses: vlang/setup-v@v1.1
         with:
           check-latest: true
 
