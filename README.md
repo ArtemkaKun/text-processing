@@ -2,6 +2,10 @@
 
 This library provides a set of functions in V for text processing.
 
+## Installation
+
+To install the library, use VPM - `v install ArtemkaKun.textproc`
+
 ## Modules
 
 | Module                      | Description                                           |
