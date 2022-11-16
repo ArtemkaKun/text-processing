@@ -11,10 +11,10 @@ To install the library, use VPM - `v install ArtemkaKun.textproc`
 To use, import needed module like following:
 
 ```v
-import artemkakun.textproc.src.<module>
+import artemkakun.textproc.src.module
 ```
 
-where `<module>` is the name of the module you want to use (look at the list below).
+where `module` is the name of the module you want to use (look at the list below).
 
 ## Modules
 
