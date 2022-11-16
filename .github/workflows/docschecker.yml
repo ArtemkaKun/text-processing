@@ -16,6 +16,9 @@ jobs:
         with:
           check-latest: true
 
+      - name: Install this module
+        run: v install ArtemkaKun.textproc
+
       - name: Checkout ${{ github.event.repository.name }}
         uses: actions/checkout@v2
 
