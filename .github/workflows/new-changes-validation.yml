@@ -25,6 +25,6 @@ jobs:
         trimming: [, -skip-unused]
         optimization: [, -prod]
         memory-management: [, -autofree]
-      steps:
-        - name: ${{ matrix.trimming }} ${{ matrix.optimization }} ${{ matrix.memory-management }} build
-          run: v -shared ${{ matrix.trimming }} ${{ matrix.optimization }} ${{ matrix.memory-management }} .
+    steps:
+      - name: ${{ matrix.trimming }} ${{ matrix.optimization }} ${{ matrix.memory-management }} build
+        run: v -shared ${{ matrix.trimming }} ${{ matrix.optimization }} ${{ matrix.memory-management }} .
