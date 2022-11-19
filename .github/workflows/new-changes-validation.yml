@@ -12,8 +12,8 @@ jobs:
     steps:
       - name: Install V
         uses: vlang/setup-v@v1.1
-          with:
-            check-latest: true
+        with:
+          check-latest: true
 
       - name: Checkout ${{ github.event.repository.name }}
         uses: actions/checkout@v3
