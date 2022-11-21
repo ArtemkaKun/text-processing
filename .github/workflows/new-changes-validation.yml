@@ -1,0 +1,81 @@
+name: New changes validation
+
+on:
+  push:
+    branches:
+      - 'main'
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        trimming: [ null , -skip-unused ]
+        optimization: [ null , -prod ]
+        memory-management: [ null , -autofree ]
+    steps:
+      - name: Install V
+        uses: vlang/setup-v@v1.1
+        with:
+          check-latest: true
+
+      - name: Checkout ${{ github.event.repository.name }}
+        uses: actions/checkout@v3
+
+      - name: ${{ matrix.trimming }} ${{ matrix.optimization }} ${{ matrix.memory-management }} build
+        run: v -shared ${{ matrix.trimming }} ${{ matrix.optimization }} ${{ matrix.memory-management }} .
+
+  test:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install V
+        uses: vlang/setup-v@v1.1
+        with:
+          check-latest: true
+
+      - name: Checkout ${{ github.event.repository.name }}
+        uses: actions/checkout@v3
+
+      - name: Run tests
+        run: v test .
+
+  format:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install V
+        uses: vlang/setup-v@v1.1
+        with:
+          check-latest: true
+
+      - name: Checkout ${{ github.event.repository.name }}
+        uses: actions/checkout@v3
+
+      - name: Check if code is formatted
+        run: |
+          v fmt -diff .
+          v fmt -verify .
+
+  ### Based on Docs CI (docs_ci) from the V repo
+  docs:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install V
+        uses: vlang/setup-v@v1.1
+        with:
+          check-latest: true
+
+      - name: Install this module
+        run: v install ArtemkaKun.textproc
+
+      - name: Checkout ${{ github.event.repository.name }}
+        uses: actions/checkout@v3
+
+      - name: Check markdown line length & code examples
+        run: v check-md -hide-warnings .
+
+      - name: Check public methods without documentation
+        run: v missdoc --exclude /tests/ --verify .
