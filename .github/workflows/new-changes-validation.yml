@@ -7,16 +7,6 @@ on:
   pull_request:
 
 jobs:
-  set-up-environment:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Install V
-        uses: vlang/setup-v@v1.1
-        with:
-          check-latest: true
-
-      - name: Checkout ${{ github.event.repository.name }}
-        uses: actions/checkout@v3
   build:
     needs: set-up-environment
     runs-on: ubuntu-latest
@@ -26,5 +16,13 @@ jobs:
         optimization: [ null , -prod ]
         memory-management: [ null , -autofree ]
     steps:
+      - name: Install V
+        uses: vlang/setup-v@v1.1
+        with:
+          check-latest: true
+
+      - name: Checkout ${{ github.event.repository.name }}
+        uses: actions/checkout@v3
+
       - name: ${{ matrix.trimming }} ${{ matrix.optimization }} ${{ matrix.memory-management }} build
         run: v -shared ${{ matrix.trimming }} ${{ matrix.optimization }} ${{ matrix.memory-management }} .
