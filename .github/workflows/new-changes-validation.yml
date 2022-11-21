@@ -22,9 +22,9 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        trimming: [, -skip-unused]
-        optimization: [, -prod]
-        memory-management: [, -autofree]
+        trimming: [ null , -skip-unused ]
+        optimization: [ null , -prod ]
+        memory-management: [ null , -autofree ]
     steps:
       - name: ${{ matrix.trimming }} ${{ matrix.optimization }} ${{ matrix.memory-management }} build
         run: v -shared ${{ matrix.trimming }} ${{ matrix.optimization }} ${{ matrix.memory-management }} .
