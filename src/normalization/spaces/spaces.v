@@ -1,9 +1,8 @@
 module spaces
 
 struct Range {
-mut:
-	start      int = -1
-	end        int = -1
+	start      int
+	end        int
 	is_on_edge bool
 }
 
@@ -45,19 +44,16 @@ fn process_spaces_ranges(space_ranges []Range, current_space_index int, edge_end
 }
 
 fn process_spaces_range(actual_last_spaces_range Range, current_space_index int, edge_end_position int) Range {
-	mut new_last_spaces_range := Range{
+	return Range{
 		start: actual_last_spaces_range.start
 		end: current_space_index
+		is_on_edge: check_if_range_is_on_edge(actual_last_spaces_range.start, current_space_index,
+			edge_end_position)
 	}
-
-	new_last_spaces_range.is_on_edge = check_if_range_is_on_edge(new_last_spaces_range,
-		edge_end_position)
-
-	return new_last_spaces_range
 }
 
-fn check_if_range_is_on_edge(range Range, end_position int) bool {
-	return range.start == 0 || range.end == end_position
+fn check_if_range_is_on_edge(range_start int, range_end int, end_position int) bool {
+	return range_start == 0 || range_end == end_position
 }
 
 fn construct_normalized_string(original_string string, space_ranges []Range) string {
@@ -84,14 +80,12 @@ fn insert_edge_spaces(spaceless_original_string_as_array []u8, space_ranges []Ra
 }
 
 fn try_insert_edge_spaces(string_to_insert []u8, spaces_range Range) []u8 {
-	mut value_with_spaces := string_to_insert.clone()
-
 	if spaces_range.is_on_edge {
 		return insert_spaces_at_position(string_to_insert, spaces_range.start,
 			(spaces_range.end - spaces_range.start) + 1)
 	}
 
-	return value_with_spaces
+	return string_to_insert
 }
 
 fn insert_normalized_inner_spaces(normalized_string_with_edge_spaces_as_array []u8, space_ranges []Range) []u8 {
@@ -106,13 +100,11 @@ fn insert_normalized_inner_spaces(normalized_string_with_edge_spaces_as_array []
 }
 
 fn try_insert_normalized_inner_spaces(string_to_insert []u8, spaces_range Range) []u8 {
-	mut value_with_spaces := string_to_insert.clone()
-
 	if spaces_range.is_on_edge == false {
 		return insert_spaces_at_position(string_to_insert, spaces_range.start, 1)
 	}
 
-	return value_with_spaces
+	return string_to_insert
 }
 
 fn insert_spaces_at_position(string_to_insert []u8, position_index int, spaces_count int) []u8 {
