@@ -36,7 +36,7 @@ fn determine_spaces_ranges(original_string string) []Range {
 fn process_spaces_ranges(space_ranges []Range, current_space_index int, edge_end_position int) []Range {
 	mut processed_spaces_ranges := space_ranges.clone()
 
-	actual_last_spaces_range := space_ranges[space_ranges.len - 1]
+	actual_last_spaces_range := space_ranges.last()
 	processed_spaces_ranges[processed_spaces_ranges.len - 1] = process_spaces_range(actual_last_spaces_range,
 		current_space_index, edge_end_position)
 
@@ -109,11 +109,12 @@ fn try_insert_normalized_inner_spaces(string_to_insert []u8, spaces_range Range)
 
 fn insert_spaces_at_position(string_to_insert []u8, position_index int, spaces_count int) []u8 {
 	mut value_with_spaces := string_to_insert.clone()
+	spaces_to_add := []u8{len: spaces_count, init: ` `}
 
 	if position_index < value_with_spaces.len {
-		value_with_spaces.insert(position_index, []u8{len: spaces_count, init: ` `})
+		value_with_spaces.insert(position_index, spaces_to_add)
 	} else {
-		value_with_spaces << []u8{len: spaces_count, init: ` `}
+		value_with_spaces << spaces_to_add
 	}
 
 	return value_with_spaces
