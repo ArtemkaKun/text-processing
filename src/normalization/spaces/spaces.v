@@ -7,7 +7,7 @@ struct Range {
 
 pub fn normalize_inner_spaces(original_string string) string {
 	space_ranges := determine_space_ranges(original_string)
-	normalized_space_ranges := normalize_space_ranges(original_string.len - 1, space_ranges)
+	normalized_space_ranges := normalize_space_ranges(space_ranges, original_string.len - 1)
 
 	return construct_normalized_string(original_string, normalized_space_ranges)
 }
@@ -17,22 +17,30 @@ fn determine_space_ranges(original_string string) []Range {
 	mut is_counting_range := false
 
 	for character_index, character in original_string {
-		if character == ` ` {
-			if is_counting_range == false {
-				space_ranges << Range{
-					start: character_index
-				}
-
-				is_counting_range = true
-			}
-
-			space_ranges = update_last_space_range(space_ranges, character_index)
-		} else {
-			is_counting_range = false
-		}
+		is_counting_range = try_process_space(character_index, character, is_counting_range, mut
+			space_ranges)
 	}
 
 	return space_ranges
+}
+
+fn try_process_space(character_index int, character rune, is_counting_range bool, mut space_ranges []Range) bool {
+	if character == ` ` {
+		start_new_space_range_if_needed(character_index, is_counting_range, mut space_ranges)
+		space_ranges = update_last_space_range(space_ranges, character_index)
+
+		return true
+	}
+
+	return false
+}
+
+fn start_new_space_range_if_needed(character_index int, is_counting_range bool, mut space_ranges []Range) {
+	if is_counting_range == false {
+		space_ranges << Range{
+			start: character_index
+		}
+	}
 }
 
 fn update_last_space_range(space_ranges []Range, new_end_position int) []Range {
@@ -51,21 +59,25 @@ fn update_range(actual_range Range, new_end_position int) Range {
 	}
 }
 
-fn normalize_space_ranges(original_string_last_index int, space_ranges []Range) []Range {
+fn normalize_space_ranges(space_ranges []Range, original_string_last_index int) []Range {
 	mut normalized_space_ranges := []Range{}
 
 	for space_range in space_ranges {
-		if check_if_range_is_on_edge(space_range, original_string_last_index) {
-			normalized_space_ranges << space_range
-		} else {
-			normalized_space_ranges << Range{
-				start: space_range.start
-				end: space_range.start
-			}
-		}
+		normalized_space_ranges << try_normalize_space_range(space_range, original_string_last_index)
 	}
 
 	return normalized_space_ranges
+}
+
+fn try_normalize_space_range(space_range Range, original_string_last_index int) Range {
+	if check_if_range_is_on_edge(space_range, original_string_last_index) {
+		return space_range
+	}
+
+	return Range{
+		start: space_range.start
+		end: space_range.start
+	}
 }
 
 fn check_if_range_is_on_edge(range Range, edge_end_position int) bool {
@@ -94,10 +106,10 @@ fn insert_spaces_at_position(string_to_insert []u8, position int, spaces_count i
 	mut string_with_spaces := string_to_insert.clone()
 	spaces_to_add := []u8{len: spaces_count, init: ` `}
 
-	if position < string_with_spaces.len {
-		string_with_spaces.insert(position, spaces_to_add)
-	} else {
+	if position >= string_with_spaces.len {
 		string_with_spaces << spaces_to_add
+	} else {
+		string_with_spaces.insert(position, spaces_to_add)
 	}
 
 	return string_with_spaces
