@@ -83,26 +83,34 @@ fn update_range(actual_range Range, new_end_position int) Range {
 // 	[Range{start: 0, end: 2}, Range{start: 8, end: 9}, Range{start: 15, end: 17}], 17 -> [Range{start: 0, end: 2}, Range{start: 8, end: 8}, Range{start: 15, end: 17}]
 fn normalize_space_ranges(space_ranges []Range, original_string_last_index int) []Range {
 	mut normalized_space_ranges := []Range{}
+	mut left_shift := 0 // Since we shrink space ranges, we need to keep track of the left shift to calculate the right position of all next ranges.
 
 	for space_range in space_ranges {
-		normalized_space_ranges << try_normalize_space_range(space_range, original_string_last_index)
+		normalized_range, additional_shift := try_normalize_space_range(space_range, original_string_last_index,
+			left_shift)
+		normalized_space_ranges << normalized_range
+		left_shift += additional_shift // We need to take into account all previous shifts, not only the last one.
 	}
 
 	return normalized_space_ranges
 }
 
-fn try_normalize_space_range(space_range Range, original_string_last_index int) Range {
-	if check_if_range_is_on_edge(space_range, original_string_last_index) { // We don't change spaces on the edge of the string, only inner ones.
-		return space_range
+fn try_normalize_space_range(space_range Range, original_string_last_index int, left_shift int) (Range, int) {
+	if check_if_range_is_on_edge(space_range, original_string_last_index) { // We don't change spaces on the edge of the string, only inner ones. So just shift the range to the left.
+		return Range{
+			start: space_range.start - left_shift
+			end: space_range.end - left_shift
+		}, 0
 	}
 
-	// BUG, TODO - this is not working properly for string with large amount of spaces, like 'hello                           my                                       world'
+	new_left_shift := space_range.end - space_range.start // Calculating the new left shift because this range will be normalized to a single space.
+
 	// We set the end of the range to be equal to the start of the range, because later in calculations this will mean that the range has a length of 1.
 	// This is the way we are normalizing spaces.
 	return Range{
-		start: space_range.start
-		end: space_range.start
-	}
+		start: space_range.start - left_shift
+		end: space_range.start - left_shift
+	}, new_left_shift
 }
 
 fn check_if_range_is_on_edge(range Range, edge_end_position int) bool {
