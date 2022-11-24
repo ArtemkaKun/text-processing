@@ -8,12 +8,6 @@
 
 module spaces
 
-// A struct is used instead of an double element array to add more context to the code (clear and readable access to start and end of the range).
-struct Range {
-	start int
-	end   int
-}
-
 // Example:
 // 	'hello world' -> 'hello world'
 // 	'hello  world' -> 'hello world'
@@ -72,13 +66,6 @@ fn update_last_space_range(space_ranges []Range, new_end_position int) []Range {
 	return updated_ranges
 }
 
-fn update_range(actual_range Range, new_end_position int) Range {
-	return Range{
-		start: actual_range.start
-		end: new_end_position
-	}
-}
-
 // Example:
 // 	[Range{start: 0, end: 2}, Range{start: 8, end: 9}, Range{start: 15, end: 17}], 17 -> [Range{start: 0, end: 2}, Range{start: 8, end: 8}, Range{start: 15, end: 17}]
 fn normalize_space_ranges(space_ranges []Range, original_string_last_index int) []Range {
@@ -111,10 +98,6 @@ fn try_normalize_space_range(space_range Range, original_string_last_index int, 
 		start: space_range.start - left_shift
 		end: space_range.start - left_shift
 	}, new_left_shift
-}
-
-fn check_if_range_is_on_edge(range Range, edge_end_position int) bool {
-	return range.start == 0 || range.end == edge_end_position
 }
 
 fn construct_normalized_string(original_string string, space_ranges []Range) string {
