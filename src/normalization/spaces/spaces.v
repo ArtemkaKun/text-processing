@@ -39,7 +39,8 @@ fn determine_space_ranges(original_string string) []Range {
 // I really didn't want to use mutability here, but I decided that 3-deep nesting is a bigger evil than mutability of one parameter.
 fn try_process_space(character_index int, character rune, is_counting_range bool, mut space_ranges []Range) bool {
 	if character == ` ` {
-		start_new_space_range_if_needed(character_index, is_counting_range, mut space_ranges) // We updating the last one member of the space_ranges array, so we ned to make sure that it exists and that this is the right one.
+		// We updating the last one member of the space_ranges array, so we need to make sure that it exists and that this is the right one.
+		start_new_space_range_if_needed(character_index, is_counting_range, mut space_ranges)
 		space_ranges = update_last_space_range(space_ranges, character_index)
 
 		return true
@@ -50,7 +51,9 @@ fn try_process_space(character_index int, character rune, is_counting_range bool
 
 // This method is exists only to get rid of 3-deep nesting.
 fn start_new_space_range_if_needed(character_index int, is_counting_range bool, mut space_ranges []Range) {
-	if is_counting_range == false { // This is true only in 2 cases: for the first space in a string OR the previous character was not a space, so we closed the previous range and need to start a new one.
+	// This is true only in 2 cases: for the first space in a string OR the previous character was not a space,
+	// so we closed the previous range and need to start a new one.
+	if is_counting_range == false {
 		space_ranges << Range{
 			start: character_index
 		}
@@ -67,7 +70,8 @@ fn update_last_space_range(space_ranges []Range, new_end_position int) []Range {
 }
 
 // Example:
-// 	[Range{start: 0, end: 2}, Range{start: 8, end: 9}, Range{start: 15, end: 17}], 17 -> [Range{start: 0, end: 2}, Range{start: 8, end: 8}, Range{start: 15, end: 17}]
+// 	[Range{start: 0, end: 2}, Range{start: 8, end: 9}, Range{start: 15, end: 17}], 17 ->
+// 	[Range{start: 0, end: 2}, Range{start: 8, end: 8}, Range{start: 15, end: 17}]
 fn normalize_space_ranges(space_ranges []Range, original_string_last_index int) []Range {
 	mut normalized_space_ranges := []Range{}
 	mut left_shift := 0 // Since we shrink space ranges, we need to keep track of the left shift to calculate the right position of all next ranges.
@@ -83,7 +87,8 @@ fn normalize_space_ranges(space_ranges []Range, original_string_last_index int) 
 }
 
 fn try_normalize_space_range(space_range Range, original_string_last_index int, left_shift int) (Range, int) {
-	if check_if_range_is_on_edge(space_range, original_string_last_index) { // We don't change spaces on the edge of the string, only inner ones. So just shift the range to the left.
+	// We don't change spaces on the edge of the string, only inner ones. So just shift the range to the left.
+	if check_if_range_is_on_edge(space_range, original_string_last_index) {
 		return Range{
 			start: space_range.start - left_shift
 			end: space_range.end - left_shift
@@ -101,7 +106,8 @@ fn try_normalize_space_range(space_range Range, original_string_last_index int, 
 }
 
 fn construct_normalized_string(original_string string, space_ranges []Range) string {
-	spaceless_original_string_as_array := original_string.replace(' ', '').bytes() // Inserting to array of bytes is more clean and easy than inserting to string (especially when you need to insert at specific position).
+	// Inserting to array of bytes is more clean and easy than inserting to string (especially when you need to insert at specific position).
+	spaceless_original_string_as_array := original_string.replace(' ', '').bytes()
 
 	return insert_spaces(spaceless_original_string_as_array, space_ranges).bytestr()
 }
@@ -112,7 +118,8 @@ fn insert_spaces(string_to_insert []u8, space_ranges []Range) []u8 {
 	mut normalized_string_as_array := string_to_insert.clone()
 
 	for spaces_range in space_ranges {
-		spaces_count := (spaces_range.end - spaces_range.start) + 1 // Because we count ranges from 0, we need to add 1 to get the actual count of spaces.
+		// Because we count ranges from 0, we need to add 1 to get the actual count of spaces.
+		spaces_count := (spaces_range.end - spaces_range.start) + 1
 		normalized_string_as_array = insert_spaces_at_position(normalized_string_as_array,
 			spaces_range.start, spaces_count)
 	}
@@ -124,7 +131,9 @@ fn insert_spaces_at_position(string_to_insert []u8, position int, spaces_count i
 	mut string_with_spaces := string_to_insert.clone()
 	spaces_to_add := []u8{len: spaces_count, init: ` `}
 
-	if position >= string_with_spaces.len { // The problem is that space ranges are calculated for the original string, but we working on the original string without spaces, so we need to check if we need to insert or append.
+	// The problem is that space ranges are calculated for the original string, but we working on the original string without spaces,
+	// so we need to check if we need to insert or append.
+	if position >= string_with_spaces.len {
 		string_with_spaces << spaces_to_add
 	} else {
 		string_with_spaces.insert(position, spaces_to_add)
