@@ -63,48 +63,20 @@ fn construct_normalized_string(original_string string, space_ranges []Range) str
 }
 
 fn insert_spaces(string_to_insert []u8, space_ranges []Range) []u8 {
-	string_with_edge_spaces_as_array := insert_edge_spaces(string_to_insert, space_ranges)
-
-	return insert_normalized_inner_spaces(string_with_edge_spaces_as_array, space_ranges)
-}
-
-fn insert_edge_spaces(spaceless_original_string_as_array []u8, space_ranges []Range) []u8 {
-	mut normalized_string_with_edge_spaces_as_array := spaceless_original_string_as_array.clone()
+	mut normalized_string_as_array := string_to_insert.clone()
 
 	for spaces_range in space_ranges {
-		normalized_string_with_edge_spaces_as_array = try_insert_edge_spaces(normalized_string_with_edge_spaces_as_array,
-			spaces_range)
-	}
+		mut additional_spaces := 0
 
-	return normalized_string_with_edge_spaces_as_array
-}
+		if spaces_range.is_on_edge {
+			additional_spaces = spaces_range.end - spaces_range.start
+		}
 
-fn try_insert_edge_spaces(string_to_insert []u8, spaces_range Range) []u8 {
-	if spaces_range.is_on_edge {
-		return insert_spaces_at_position(string_to_insert, spaces_range.start,
-			(spaces_range.end - spaces_range.start) + 1)
-	}
-
-	return string_to_insert
-}
-
-fn insert_normalized_inner_spaces(normalized_string_with_edge_spaces_as_array []u8, space_ranges []Range) []u8 {
-	mut normalized_string_as_array := normalized_string_with_edge_spaces_as_array.clone()
-
-	for spaces_range in space_ranges {
-		normalized_string_as_array = try_insert_normalized_inner_spaces(normalized_string_as_array,
-			spaces_range)
+		normalized_string_as_array = insert_spaces_at_position(normalized_string_as_array,
+			spaces_range.start, additional_spaces + 1)
 	}
 
 	return normalized_string_as_array
-}
-
-fn try_insert_normalized_inner_spaces(string_to_insert []u8, spaces_range Range) []u8 {
-	if spaces_range.is_on_edge == false {
-		return insert_spaces_at_position(string_to_insert, spaces_range.start, 1)
-	}
-
-	return string_to_insert
 }
 
 fn insert_spaces_at_position(string_to_insert []u8, position_index int, spaces_count int) []u8 {
