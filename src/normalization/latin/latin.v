@@ -93,14 +93,14 @@ const convertibles = {
 
 // Returns a new string by exchanging the diacrylics of str by its latin counterparts,
 // leaving untouched all other non Latin "characters".
-pub fn normalize_latin(str string) string {
-	mut str_aux := str
+pub fn normalize_latin_diacritics(str string) string {
+	mut normalized_string := str.clone()
 
-	for normlized_letter, letters_with_diacritics in latin.convertibles {
-		for letter_with_diacritic in letters_with_diacritics {
-			str_aux = str_aux.replace(letter_with_diacritic, normlized_letter)
+	for normalized_letter, characters_with_diacritics in latin.convertibles {
+		for character_with_diacritic in characters_with_diacritics {
+			normalized_string = normalized_string.replace(character_with_diacritic, normalized_letter)
 		}
 	}
 
-	return str_aux
+	return normalized_string
 }
