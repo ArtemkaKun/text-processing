@@ -1,5 +1,7 @@
 import src.punctuation
 
+// TODO: this test only convers English punctuation (based on https://codebeautify.org/remove-punctuation).
+// Add tests for other languages.
 fn test_clean_punctuation() {
 	// vfmt off
 	input_to_expected_map := {
