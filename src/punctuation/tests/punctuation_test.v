@@ -24,6 +24,6 @@ fn test_clean_punctuation() {
 	// vfmt on
 
 	for input, expected in input_to_expected_map {
-		assert punctuation.clean_punctuation(input)! == expected
+		assert punctuation.clean_punctuation(input) == expected
 	}
 }
