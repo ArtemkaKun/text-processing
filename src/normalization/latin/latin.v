@@ -3,7 +3,6 @@ module latin
 // Maps accented letters to normal latin letters without diacrilics.
 // Adapted from: http://web.archive.org/web/20120918093154/http://lehelk.com/2011/05/06/script-to-remove-diacritics/
 // This method maybe is not the smartest one, but it works as expected.
-// It's also not the fastest one, but it's fast enough in most cases.
 const latin_character_to_diacritics_map = {
 	// vfmt off
 	'A':  ['A', 'Ⓐ', 'Ａ', 'À', 'Á', 'Â', 'Ầ', 'Ấ', 'Ẫ', 'Ẩ', 'Ã', 'Ā', 'Ă', 'Ằ', 'Ắ', 'Ẵ', 'Ẳ', 'Ȧ', 'Ǡ', 'Ä', 'Ǟ', 'Ả', 'Å', 'Ǻ', 'Ǎ', 'Ȁ', 'Ȃ', 'Ạ', 'Ậ', 'Ặ', 'Ḁ', 'Ą', 'Ⱥ', 'Ɐ']
