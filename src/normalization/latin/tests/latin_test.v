@@ -1,28 +1,36 @@
 import src.normalization.latin
 
 fn test_normalize_latin() {
-	assert latin.normalize_latin_diacritics('') == ''
-	assert latin.normalize_latin_diacritics('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz') == '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
-	assert latin.normalize_latin_diacritics('AĀBCČDEĒFGĢHIĪJKĶLĻMNŅOPQRSŠTUŪVXYWZŽ') == 'AABCCDEEFGGHIIJKKLLMNNOPQRSSTUUVXYWZZ'
-	assert latin.normalize_latin_diacritics('aābcčdeēfgģhiījkķlļmnņopqrsštuūvxywzž') == 'aabccdeefgghiijkkllmnnopqrsstuuvxywzz'
-	assert latin.normalize_latin_diacritics('ąĄčČęĘėĖįĮšŠųŲūŪžŽ') == 'aAcCeEeEiIsSuUuUzZ'
-	assert latin.normalize_latin_diacritics('ãẽĩõũñỹ') == 'aeiouny'
-	assert latin.normalize_latin_diacritics('ÃẼĨÕŨÑỸ') == 'AEIOUNY'
-	assert latin.normalize_latin_diacritics('àèìòùǹỳẁ') == 'aeiounyw'
-	assert latin.normalize_latin_diacritics('ÀÈÌÒÙǸỲẀ') == 'AEIOUNYW'
-	assert latin.normalize_latin_diacritics('áéíóúǵḱĺḿńṕŕśẃýź') == 'aeiougklmnprswyz'
-	assert latin.normalize_latin_diacritics('ÁÉÍÓÚǴḰĹḾŃṔŔŚẂÝŹ') == 'AEIOUGKLMNPRSWYZ'
-	assert latin.normalize_latin_diacritics('âêîôûĉĝĥĵŝŷŵẑ') == 'aeioucghjsywz'
-	assert latin.normalize_latin_diacritics('ÂÊÎÔÛĈĜĤĴŜŶŴẐ') == 'AEIOUCGHJSYWZ'
-	assert latin.normalize_latin_diacritics('äëïöüḧẗẍÿẅ') == 'aeiouhtxyw'
-	assert latin.normalize_latin_diacritics('ÄËÏÖÜḦẌŸẄ') == 'AEIOUHXYW'
-	assert latin.normalize_latin_diacritics('åÅ') == 'aA'
-	assert latin.normalize_latin_diacritics('æÆ') == 'aeAE'
-	assert latin.normalize_latin_diacritics('çÇ') == 'cC'
-	assert latin.normalize_latin_diacritics('øØ') == 'oO'
-	assert latin.normalize_latin_diacritics('ß') == 's'
-	assert latin.normalize_latin_diacritics('В начале') == 'В начале'
-	assert latin.normalize_latin_diacritics('最初有道') == '最初有道'
-	assert latin.normalize_latin_diacritics('לפניכם') == 'לפניכם'
-	// TODO: assert latin.normalize_latin('œŒ') == 'oeOE'
+	input_to_expected_map := {
+		// vfmt off
+		'':																  ''
+		'0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz': '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
+		'AĀBCČDEĒFGĢHIĪJKĶLĻMNŅOPQRSŠTUŪVXYWZŽ':						  'AABCCDEEFGGHIIJKKLLMNNOPQRSSTUUVXYWZZ'
+		'aābcčdeēfgģhiījkķlļmnņopqrsštuūvxywzž':						  'aabccdeefgghiijkkllmnnopqrsstuuvxywzz'
+		'ąĄčČęĘėĖįĮšŠųŲūŪžŽ':                           				  'aAcCeEeEiIsSuUuUzZ'
+		'ãẽĩõũñỹ':                                               		  'aeiouny'
+		'ÃẼĨÕŨÑỸ':                                               		  'AEIOUNY'
+		'àèìòùǹỳẁ':                                             		  'aeiounyw'
+		'ÀÈÌÒÙǸỲẀ':                                             		  'AEIOUNYW'
+		'áéíóúǵḱĺḿńṕŕśẃýź':                           					  'aeiougklmnprswyz'
+		'ÁÉÍÓÚǴḰĹḾŃṔŔŚẂÝŹ':                           					  'AEIOUGKLMNPRSWYZ'
+		'âêîôûĉĝĥĵŝŷŵẑ':                                    			  'aeioucghjsywz'
+		'ÂÊÎÔÛĈĜĤĴŜŶŴẐ':                                    			  'AEIOUCGHJSYWZ'
+		'äëïöüḧẗẍÿẅ':                                       			  'aeiouhtxyw'
+		'ÄËÏÖÜḦẌŸẄ':                                          			  'AEIOUHXYW'
+		'åÅ':                                                             'aA'
+		'æÆ':                                                             'aeAE'
+		'çÇ':                                                             'cC'
+		'øØ':                                                             'oO'
+		'ß':                                                              's'
+		'В начале':                                                       'В начале'
+		'最初有道':														  '最初有道'
+		'לפניכם':														  'לפניכם'
+		// TODO: 'œŒ' : 'oeOE'
+		// vfmt on
+	}
+
+	for input, expected in input_to_expected_map {
+		assert latin.normalize_latin_diacritics(input) == expected
+	}
 }
