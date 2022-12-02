@@ -1,6 +1,6 @@
 module links
 
-import regex
+import src.common
 
 const links_regex_query = r'https' // ATTENTION: this is not valid regex, since we only using regex.find(), not regex.match(). A valid regex need to be reimplemented.
 
@@ -21,7 +21,7 @@ const links_regex_query = r'https' // ATTENTION: this is not valid regex, since 
 // Output:
 //   'https://link.com'
 pub fn extract_link(value string) !string {
-	mut links_regex := regex.regex_opt(links.links_regex_query) or { return err }
+	mut links_regex := common.create_regex(links.links_regex_query)
 	start, _ := links_regex.find(value)
 
 	if start != -1 {
