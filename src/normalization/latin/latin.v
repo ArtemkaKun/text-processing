@@ -2,7 +2,7 @@ module latin
 
 // Maps accented letters to normal latin letters without diacrilics.
 // Adapted from: http://web.archive.org/web/20120918093154/http://lehelk.com/2011/05/06/script-to-remove-diacritics/
-const convertibles = {
+const latin_character_to_diacritics_map = {
 	// vfmt off
 	'A':  ['A', 'Ⓐ', 'Ａ', 'À', 'Á', 'Â', 'Ầ', 'Ấ', 'Ẫ', 'Ẩ', 'Ã', 'Ā', 'Ă', 'Ằ', 'Ắ', 'Ẵ', 'Ẳ', 'Ȧ', 'Ǡ', 'Ä', 'Ǟ', 'Ả', 'Å', 'Ǻ', 'Ǎ', 'Ȁ', 'Ȃ', 'Ạ', 'Ậ', 'Ặ', 'Ḁ', 'Ą', 'Ⱥ', 'Ɐ']
 	'AA': ['Ꜳ']
@@ -96,7 +96,7 @@ const convertibles = {
 pub fn normalize_latin_diacritics(str string) string {
 	mut normalized_string := str.clone()
 
-	for normalized_letter, characters_with_diacritics in latin.convertibles {
+	for normalized_letter, characters_with_diacritics in latin.latin_character_to_diacritics_map {
 		for character_with_diacritic in characters_with_diacritics {
 			normalized_string = normalized_string.replace(character_with_diacritic, normalized_letter)
 		}
