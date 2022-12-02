@@ -96,10 +96,18 @@ const latin_character_to_diacritics_map = {
 pub fn normalize_latin_diacritics(str string) string {
 	mut normalized_string := str.clone()
 
-	for normalized_letter, characters_with_diacritics in latin.latin_character_to_diacritics_map {
-		for character_with_diacritic in characters_with_diacritics {
-			normalized_string = normalized_string.replace(character_with_diacritic, normalized_letter)
-		}
+	for latin_letter, diacritics in latin.latin_character_to_diacritics_map {
+		normalized_string = replace_diacritics_with_latin(latin_letter, diacritics, normalized_string)
+	}
+
+	return normalized_string
+}
+
+fn replace_diacritics_with_latin(latin_letter string, diacritics []string, string_to_normalize string) string {
+	mut normalized_string := string_to_normalize.clone()
+
+	for character_with_diacritic in diacritics {
+		normalized_string = normalized_string.replace(character_with_diacritic, latin_letter)
 	}
 
 	return normalized_string

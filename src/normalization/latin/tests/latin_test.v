@@ -1,6 +1,6 @@
 import src.normalization.latin
 
-fn test_normalize_latin() {
+fn test_normalize_latin_diacritics() {
 	input_to_expected_map := {
 		// vfmt off
 		'':																  ''
