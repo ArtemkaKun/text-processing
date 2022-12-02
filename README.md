@@ -16,12 +16,12 @@ import artemkakun.textproc.src.case
 
 ## Modules
 
-| Module                                         | Description                                                        |
-|------------------------------------------------|--------------------------------------------------------------------|
-| `artemkakun.textproc.src.case`                 | String case manipulation functions (any → snake_case)              |
-| `artemkakun.textproc.src.links`                | Functions for extracting links from text                           |
-| `artemkakun.textproc.src.normalization.spaces` | Functions for normalizing inner spaces in a text                   |
-| `artemkakun.textproc.src.normalization.latin`  | Functions for normalizing latin character with diacritics (Ł -> L) |
+| Module                                         | Description                                                       |
+|------------------------------------------------|-------------------------------------------------------------------|
+| `artemkakun.textproc.src.case`                 | String case manipulation functions (any → snake_case)             |
+| `artemkakun.textproc.src.links`                | Functions for extracting links from text                          |
+| `artemkakun.textproc.src.normalization.spaces` | Functions for normalizing inner spaces in a text                  |
+| `artemkakun.textproc.src.normalization.latin`  | Functions for normalizing latin character with diacritics (Ł → L) |
 
 
 ## Donations
